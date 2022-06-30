@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style type="text/css">
+
+</style>
+<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"> </script>
+<script th:src="@{/js/vue.js}"></script>
+<body style="background-color: lightsalmon">
+<center>
+    <div id="div_01">
+        <h3>欢迎来到主页</h3>
+        <button v-on:click="click">点击</button>
+
+    </div>
+
+</center>
+</body>
+<script type="text/javascript">
+    $(function () {
+        new Vue({
+            el:"#div_01",
+            methods:{
+                click:function () {
+                    for (var i=0;i<=2;i++){
+                        alert("点什么点啊,你二逼啊")
+                    }
+                }
+            }
+        })
+    })
+</script>
+</html>

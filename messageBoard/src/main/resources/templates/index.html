@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style type="text/css">
+
+</style>
+<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<body >
+<center>
+    <p>欢迎来到储物银行</p>
+    <div>
+        <h3>请登录</h3>
+        <div>
+            <p>
+                用户名:<input id="account">
+                密码:<input type="password" id="password">
+            </p>
+            <p>
+                <button id="login">登录</button>
+                <button id="registry">注册</a></button>
+            </p>
+        </div>
+    </div>
+</center>
+</body>
+<script type="text/javascript">
+
+    $(function () {
+        document.onkeydown = function(e){
+            var ev = document.all ? window.event : e;
+            if(ev.keyCode==13) {
+               $("#login").click();
+            }
+        }
+        
+
+        $("#login").on("click", function () {
+            let account = $("#account").val().trim();
+            let password = $("#password").val().trim();
+            if (account==null || account==""){
+               alert("请检查账户输入")
+                return;
+            }else if (!/^1[1-9]\d{9}$/.test(account)){
+                alert("登录账户应该为手机号")
+                return;
+            }
+            if (password==null || password==""){
+               alert("请检查密码输入")
+                return;
+            }
+
+            $("#login").attr("disabled",true);
+            $.ajax({
+                url:"/user/login",
+                type:"post",
+                data:{
+                    account:account,
+                    password:password
+                },
+                success:function (data) {
+                    if (data.code==1){
+                       window.location.href="HomePageIndex"
+                    }else{
+                        alert(data.message)
+                        $("#login").attr("disabled",false);
+                    }
+                }
+            });
+
+
+        });
+
+        $("#registry").on("click",function (){
+            window.location.href="registryIndex";
+        });
+    });
+
+</script>
+</html>

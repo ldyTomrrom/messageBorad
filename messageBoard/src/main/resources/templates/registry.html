@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<body>
+<center>
+    <p>欢迎来到储物银行注册</p>
+    <div>
+        <div>
+            <p>
+                请输入账户:<input id="account"> <br>
+                请输入密码:<input type="password" id="password"> <br>
+                <button id="reset">重置</button>
+                <button id="registry">提交</button>
+            </p>
+        </div>
+    </div>
+</center>
+
+</body>
+<script type="text/javascript">
+
+    $(function () {
+
+        $("#registry").on("click", function () {
+            let account = $("#account").val().trim();
+            let password = $("#password").val().trim();
+            if (account == null || account == "") {
+                alert("请检查账户输入")
+                return;
+            }
+            if (password == null || password == "") {
+                alert("请检查密码输入")
+                return;
+            }
+
+            $("#registry").attr("disabled",true);
+            $.ajax({
+                url: "/user/registry",
+                type: "post",
+                data: {
+                    account: account,
+                    password: password
+                },
+                success: function (data) {
+                    if (data.code == 1) {
+                        alert("注册成功,请登录")
+                        window.location.href="index"
+                    } else {
+                        alert(data.message)
+                    }
+                }
+            });
+
+
+        });
+
+        $("#reset").on("click", function () {
+            $("#account").val("");
+            $("#password").val("");
+        })
+
+        $("#account").on("blur",function () {
+            let account = $("#account").val().trim();
+            if (account!=null && account!=""){
+                if (!/^1[1-9]\d{9}$/.test(account)){
+                    alert("注册账户应该为手机号")
+                    return;
+                }
+                $.ajax({
+                    url:"/checkPhone",
+                    type: "get",
+                    data: {
+                        at:account
+                    },
+                    success:function (data) {
+                       if (data.code!=1){
+                           alert("用户已存在重新输入账户");
+                           $("#account").val("");
+                       }
+
+                    }
+                });
+            }
+        });
+
+    });
+
+</script>
+</html>

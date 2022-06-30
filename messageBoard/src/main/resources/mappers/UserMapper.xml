@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mesboard.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.mesboard.model.User">
+    <id column="ac_id" jdbcType="VARCHAR" property="acId" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="last_login_time" jdbcType="VARCHAR" property="lastLoginTime" />
+    <result column="ac_open_time" jdbcType="VARCHAR" property="acOpenTime" />
+    <result column="ac_sts" jdbcType="VARCHAR" property="acSts" />
+    <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ac_id, account, password, last_login_time, ac_open_time, ac_sts, last_login_ip
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mb_user
+    where ac_id = #{acId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mb_user
+    where ac_id = #{acId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mesboard.model.User">
+    insert into mb_user (ac_id, account, password, 
+      last_login_time, ac_open_time, ac_sts, 
+      last_login_ip)
+    values (#{acId,jdbcType=VARCHAR}, #{account,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, 
+      #{lastLoginTime,jdbcType=VARCHAR}, #{acOpenTime,jdbcType=VARCHAR}, #{acSts,jdbcType=VARCHAR}, 
+      #{lastLoginIp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mesboard.model.User">
+    insert into mb_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="acId != null">
+        ac_id,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="acOpenTime != null">
+        ac_open_time,
+      </if>
+      <if test="acSts != null">
+        ac_sts,
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="acId != null">
+        #{acId,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=INTEGER},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="acOpenTime != null">
+        #{acOpenTime,jdbcType=VARCHAR},
+      </if>
+      <if test="acSts != null">
+        #{acSts,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginIp != null">
+        #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mesboard.model.User">
+    update mb_user
+    <set>
+      <if test="account != null">
+        account = #{account,jdbcType=INTEGER},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="acOpenTime != null">
+        ac_open_time = #{acOpenTime,jdbcType=VARCHAR},
+      </if>
+      <if test="acSts != null">
+        ac_sts = #{acSts,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ac_id = #{acId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mesboard.model.User">
+    update mb_user
+    set account = #{account,jdbcType=INTEGER},
+      password = #{password,jdbcType=VARCHAR},
+      last_login_time = #{lastLoginTime,jdbcType=VARCHAR},
+      ac_open_time = #{acOpenTime,jdbcType=VARCHAR},
+      ac_sts = #{acSts,jdbcType=VARCHAR},
+      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR}
+    where ac_id = #{acId,jdbcType=VARCHAR}
+  </update>
+<!-- ( ) -->
+  <select id="userLogin" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from mb_user
+    where account=#{at}
+    and  password=#{pwd}
+    and ac_sts='Y'
+  </select>
+  <select id="checkPhone" resultMap="BaseResultMap">
+    select ac_id
+    from mb_user
+    where account=#{at}
+  </select>
+
+</mapper>
